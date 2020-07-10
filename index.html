@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+</head>
+
+<body>
+    <h1>QUIZ</h1>
+    <h2 id="result"></h2>
+    <div id="quizzy"></div>
+    <button id=ansres></button>
+    <p id="timer">Time Left</p>
+    <footer id="high scores" href=></footer>
+
+    <script>
+
+        var serie = 0, result, question, choice, choices, ansA, ansB, ans3, correct = 0;
+        var distance = 1000;
+        var min = Math.floor((distance));
+        var result = document.getElementById("result");
+        var test = document.getElementById("quizzy");
+
+
+        var questions = [
+            ["What radio button has the correct answer on question 1?", "This1A", "This1B", "This1C", "B"],
+            ["What radio button has the correct answer on question 2?", "This2A", "This2B", "This2C", "C"],
+            ["What radio button has the correct answer on question 3?", "This3A", "This3B", "This3C", "A"]
+        ];
+
+        function renderQuestion() {
+            if (serie >= questions.length) {
+                test.innerHTML = "<h2>You got " + correct + " of " + questions.length + " questions correct</h2>";
+                result.innerHTML = "Test Completed";
+                serie = 0;
+                correct = 0;
+                return false;
+            }
+
+            result.innerHTML = "Question " + (serie + 1) + " of " + questions.length;
+            question = questions[serie][0];
+            ansA = questions[serie][1];
+            ansB = questions[serie][2];
+            ansC = questions[serie][3];
+            test.innerHTML = "<h3>" + question + "</h3>";
+            test.innerHTML += "<input type='radio' name='choices' value='A'> " + ansA + "<br>";
+            test.innerHTML += "<input type='radio' name='choices' value='B'> " + ansB + "<br>";
+            test.innerHTML += "<input type='radio' name='choices' value='C'> " + ansC + "<br><br>";
+            test.innerHTML += "<button onclick='checkAnswer()'>Submit Answer</button>";
+
+        }
+
+
+
+        function startup() {
+            var ready = confirm("Are you ready to take the quiz?  Please the OK button to Start the Quiz");
+            if (ready) {
+
+                var z = setInterval(function () {
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    
+
+                    if (distance < 0) {
+                        clearInterval(z);
+                        document.getElementById("timer").innerHTML = "EXPIRED";
+                    }
+                    else (document.getElementById("timer").innerHTML = "Time Left" + seconds + "m ");
+                }, 1000);
+                renderQuestion();
+            }
+        }
+
+
+        function checkAnswer() {
+            choices = document.getElementsByName("choices");
+            for (var i = 0; i < choices.length; i++) {
+                if (choices[i].checked) {
+                    choice = choices[i].value;
+                }
+            }
+            if (choice == questions[serie][3]) {
+                correct++;
+            }
+            serie++;
+            renderQuestion()
+        }
+
+        window.addEventListener("load", startup, false);
+
+    </script>
+
+</body>
+
+</html>
